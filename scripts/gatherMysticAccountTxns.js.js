@@ -17,7 +17,7 @@ class Script {
   static async run() {
     const criteria = { in_gitcoin_list: { $ne: true } };
     const totalAccounts = await Account.find(criteria).count();
-    for (let i = 0; i < totalAccounts; i++) {
+    for (let i = 5; i < totalAccounts; i++) {
         console.log("account number: ", i, " out of ", totalAccounts);
         console.log('percentage done: ', parseInt((i / totalAccounts) * 100, 10));
         const currentAccount = await getAccount(criteria, i, 1);
@@ -27,7 +27,7 @@ class Script {
           offset: 0,
           limit: 100,
         });
-        await sleep(120000);
+        await sleep(60000);
     }
   }
 }
