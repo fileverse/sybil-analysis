@@ -1,4 +1,5 @@
 const Axios = require('axios');
+const config = require('../../config');
 const { Donation } = require('../../models');
 const agenda = require('../index');
 const jobTypes = require('../jobType');
@@ -45,6 +46,7 @@ async function run({ address, offset, limit }) {
             }
             const donationObject = {};
             donationObject.raw_data = dataPoint;
+            donationObject.donation = (dataPoint.tx && dataPoint.tx.to).toLowerCase() === config.GRANT_ADDRESS.toLowerCase();
             donationObject.to = dataPoint.tx.to;
             donationObject.from = dataPoint.tx.from;
             donationObject.amount = dataPoint.tx.amount;

@@ -2,13 +2,16 @@
 require('../utils/database');
 const { Donation, Account } = require('../models');
 
-async function extractAccountsFromDonation() {
+async function extractAccountsFromDonation(criteria, offset, limit) {
     const query = [
         {
-            $match: {},
+            $match: criteria,
         },
         {
-            $limit: 10,
+            $skip: offset,
+        },
+        {
+            $limit: limit,
         },
         {
             $group: {
@@ -78,8 +81,15 @@ async function processAccounts(accounts) {
 
 class Script {
   static async run() {
-    const extractedAccounts = await extractAccountsFromDonation();
-    await processAccounts(extractedAccounts);
+    const criteria = {};
+    const totalDonations = await Donation.find(criteria).count();
+    const limit = 100;
+    const batches = Math.ceil(totalDonations / limit);
+    for (let i = 0; i < 1; i++) {
+        const offset = i * limit;
+        const extractedAccounts = await extractAccountsFromDonation(criteria, offset, limit);
+        await processAccounts(extractedAccounts);
+    }
   }
 }
 
