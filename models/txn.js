@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const _donation = {};
+const _txns = {};
 
-_donation.schema = new Schema(
+_txns.schema = new Schema(
   {
     from: { type: String, lowercase: true },
     to: { type: String, lowercase: true },
@@ -21,13 +21,13 @@ _donation.schema = new Schema(
   { runSettersOnQuery: true },
 );
 
-_donation.schema.pre('save', function (next) {
+_txns.schema.pre('save', function (next) {
   const user = this;
   user.updatedAt = Date.now();
   next();
 });
 
-_donation.schema.methods.safeObject = function () {
+_txns.schema.methods.safeObject = function () {
   const safeFields = [
     '_id',
     'from',
@@ -44,6 +44,6 @@ _donation.schema.methods.safeObject = function () {
   return newSafeObject;
 };
 
-_donation.model = mongoose.model('donations', _donation.schema);
+_txns.model = mongoose.model('txns', _txns.schema);
 
-module.exports = _donation;
+module.exports = _txns;

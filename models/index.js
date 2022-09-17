@@ -1,6 +1,6 @@
 const _models = {};
 
 _models.Account = require('./account').model;
-_models.Donation = require('./donation').model;
+_models.Txn = require('./txn').model;
 
 module.exports = _models;

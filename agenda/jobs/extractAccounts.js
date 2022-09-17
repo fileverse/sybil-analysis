@@ -1,5 +1,5 @@
 const config = require('../../config');
-const { Donation, Account } = require('../../models');
+const { Txn, Account } = require('../../models');
 const agenda = require('../index');
 const jobTypes = require('../jobType');
 
@@ -52,7 +52,7 @@ async function extractAccountsFromDonation(criteria, offset, limit) {
             }
         }
     ];
-    const extractedAcounts = await Donation.aggregate(query);
+    const extractedAcounts = await Txn.aggregate(query);
     return extractedAcounts;
 }
 
@@ -95,7 +95,7 @@ async function processAccounts(accounts) {
 
 async function run() {
     const criteria = { to: config.GRANT_ADDRESS.toLowerCase() };
-    const totalDonations = await Donation.find(criteria).count();
+    const totalDonations = await Txn.find(criteria).count();
     const limit = 100;
     const batches = Math.ceil(totalDonations / limit);
     for (let i = 0; i < batches; i++) {

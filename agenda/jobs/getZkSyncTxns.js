@@ -1,6 +1,5 @@
 const Axios = require('axios');
-const config = require('../../config');
-const { Donation } = require('../../models');
+const { Txn } = require('../../models');
 const agenda = require('../index');
 const jobTypes = require('../jobType');
 
@@ -40,26 +39,25 @@ async function run({ address, offset, limit }) {
     };
     const allPromises = data.map(async (dataPoint) => {
         if (dataPoint.tx.type === 'Transfer') {
-            const record = await Donation.findOne({ txn_hash: dataPoint.hash });
+            const record = await Txn.findOne({ txn_hash: dataPoint.hash });
             if (record) {
                 return;
             }
-            const donationObject = {};
-            donationObject.raw_data = dataPoint;
-            donationObject.donation = (dataPoint.tx && dataPoint.tx.to).toLowerCase() === config.GRANT_ADDRESS.toLowerCase();
-            donationObject.to = dataPoint.tx.to;
-            donationObject.from = dataPoint.tx.from;
-            donationObject.amount = dataPoint.tx.amount;
-            donationObject.token = dataPoint.tx.token;
-            donationObject.chain = 'ZKSYNC';
-            donationObject.txn_hash = dataPoint.hash;
-            donationObject.zksync_account_id = dataPoint.tx.accountId;
-            donationObject.commited_at = dataPoint.tx.validUntil;
-            donationObject.executed_at = dataPoint.created_at;
+            const txnObject = {};
+            txnObject.raw_data = dataPoint;
+            txnObject.to = dataPoint.tx.to;
+            txnObject.from = dataPoint.tx.from;
+            txnObject.amount = dataPoint.tx.amount;
+            txnObject.token = dataPoint.tx.token;
+            txnObject.chain = 'ZKSYNC';
+            txnObject.txn_hash = dataPoint.hash;
+            txnObject.zksync_account_id = dataPoint.tx.accountId;
+            txnObject.commited_at = dataPoint.tx.validUntil;
+            txnObject.executed_at = dataPoint.created_at;
             const timestamp = (new Date(dataPoint.created_at)).getTime();
-            donationObject.executed_at_timestamp = timestamp;
-            const donation = new Donation(donationObject);
-            await donation.save();
+            txnObject.executed_at_timestamp = timestamp;
+            const txn = new Txn(txnObject);
+            await txn.save();
         }
     });
     console.log(allPromises);
