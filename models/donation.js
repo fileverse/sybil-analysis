@@ -7,7 +7,7 @@ _donation.schema = new Schema(
   {
     from: { type: String, lowercase: true },
     to: { type: String, lowercase: true },
-    txn_hash: { type: String, lowercase: true },
+    txn_hash: { type: String, lowercase: true, index: true },
     chain: { type: String, enum: ["ZKSYNC", "POLYGON", "ETHEREUM"] },
     token: { type: String },
     amount: { type: String },

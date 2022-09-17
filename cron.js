@@ -1,5 +1,7 @@
 const agenda = require('./agenda');
 
+require('./utils/database');
+
 async function graceful() {
   await agenda.stop();
   // eslint-disable-next-line no-process-exit

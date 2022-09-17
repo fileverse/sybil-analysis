@@ -1,18 +1,48 @@
 const Axios = require('axios');
+const { Donation } = require('../../models');
+const agenda = require('../index');
+const jobTypes = require('../jobType');
 
-const { Donation } = require('./models');
+agenda.define(jobTypes.GET_ZKSYNC_TXNS, async (job, done) => {
+  const { address, offset, limit } = job.attrs.data;
+  try {
+    await run({ address, offset, limit });
+    done();
+  } catch (err) {
+    console.error(
+      'Error removing job from collection',
+      jobTypes.GET_ZKSYNC_TXNS,
+      address,
+      offset,
+      limit,
+    );
+    done(err);
+  }
+});
 
-require('./database');
-
-async function getTxns(address, offset, limit) {
+async function run({ address, offset, limit }) {
     const urlTxn = `https://api.zksync.io/api/v0.1/account/${address}/history/${offset}/${limit}`;
     const { data } = await Axios.get(urlTxn).catch((e) => {
         console.error(`Request to ${e.config.url} failed with status code ${e.response.status}`);
         return { data: null };
     });
     console.log(data);
+    if (!data) {
+        return;
+    }
+    if (data.length === limit) {
+        agenda.schedule('in 10 seconds', jobTypes.GET_ZKSYNC_TXNS, {
+            address,
+            offset: offset + limit,
+            limit,
+        });
+    };
     const allPromises = data.map(async (dataPoint) => {
         if (dataPoint.tx.type === 'Transfer') {
+            const record = await Donation.findOne({ txn_hash: dataPoint.hash });
+            if (record) {
+                return;
+            }
             const donationObject = {};
             donationObject.raw_data = dataPoint;
             donationObject.to = dataPoint.tx.to;
@@ -32,5 +62,3 @@ async function getTxns(address, offset, limit) {
     await Promise.all(allPromises);
     console.log('Done!');
 }
-
-

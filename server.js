@@ -9,7 +9,7 @@ const config = require('./config');
 const errorHandler = require('./utils/errorHandler');
 const agenda = require('./agenda');
 
-require('./database');
+require('./utils/database');
 
 // Express App
 const app = express();
