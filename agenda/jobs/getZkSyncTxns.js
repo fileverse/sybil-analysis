@@ -31,7 +31,7 @@ async function run({ address, offset, limit }) {
         return;
     }
     if (data.length === limit) {
-        agenda.schedule('in 10 seconds', jobTypes.GET_ZKSYNC_TXNS, {
+        agenda.schedule('in a minute', jobTypes.GET_ZKSYNC_TXNS, {
             address,
             offset: offset + limit,
             limit,
