@@ -14,6 +14,7 @@ _account.schema = new Schema(
   {
     gitcoin_username: { type: String },
     is_sybil: { type: Boolean, default: false },
+    in_gitcoin_list: { type: Boolean, default: false },
     main_address: { type: String, required: true, lowercase: true, index: true },
     donations: [Donation],
     connected_addresses: [{ type: String, lowercase: true }],

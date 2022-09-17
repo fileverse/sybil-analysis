@@ -4,7 +4,7 @@ const config = require('../config');
 const Account = require('../models/account').model;
 const Txn = require('../models/txn').model;
 
-const data = require('./data');
+const data = require('./data/txns');
 console.log(data);
 
 require('../utils/database');
