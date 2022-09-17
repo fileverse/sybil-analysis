@@ -9,7 +9,7 @@ async function graceful() {
 (async function () {
   try {
     await agenda.start();
-    require('./agenda/jobs/getTxns');
+    require('./agenda/jobs/getZkSyncTxns');
     console.log('started cron job successfully');
   } catch (err) {
     console.log(err.stack);

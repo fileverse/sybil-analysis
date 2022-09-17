@@ -1,22 +1,17 @@
 const Axios = require('axios');
 
-const Account = require('./models/account').model;
-const Donation = require('./models/donation').model;
-
-const data = require('./data');
-console.log(data);
+const { Donation } = require('./models');
 
 require('./database');
 
 async function getTxns(address, offset, limit) {
-    // const urlTxn = `https://api.zksync.io/api/v0.1/account/${address}/history/${offset}/${limit}`;
-    // const { data } = await Axios.get(urlTxn).catch((e) => {
-    //     console.error(`Request to ${e.config.url} failed with status code ${e.response.status}`);
-    //     return { data: null };
-    // });
+    const urlTxn = `https://api.zksync.io/api/v0.1/account/${address}/history/${offset}/${limit}`;
+    const { data } = await Axios.get(urlTxn).catch((e) => {
+        console.error(`Request to ${e.config.url} failed with status code ${e.response.status}`);
+        return { data: null };
+    });
     console.log(data);
     const allPromises = data.map(async (dataPoint) => {
-        console.log(dataPoint);
         if (dataPoint.tx.type === 'Transfer') {
             const donationObject = {};
             donationObject.raw_data = dataPoint;
@@ -38,4 +33,4 @@ async function getTxns(address, offset, limit) {
     console.log('Done!');
 }
 
-getTxns('0x8fa7d8d79907e22ddf92cd34daacdeac56311ad6', 0, 10).catch(console.log);
+
