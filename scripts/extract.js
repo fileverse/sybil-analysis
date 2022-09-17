@@ -85,7 +85,7 @@ class Script {
     const totalDonations = await Donation.find(criteria).count();
     const limit = 100;
     const batches = Math.ceil(totalDonations / limit);
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < batches; i++) {
         const offset = i * limit;
         const extractedAccounts = await extractAccountsFromDonation(criteria, offset, limit);
         await processAccounts(extractedAccounts);
