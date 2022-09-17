@@ -12,6 +12,7 @@ async function graceful() {
   try {
     await agenda.start();
     require('./agenda/jobs/getZkSyncTxns');
+    require('./agenda/jobs/extractAccountsFromDonation');
     console.log('started cron job successfully');
   } catch (err) {
     console.log(err.stack);
