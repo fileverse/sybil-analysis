@@ -2,7 +2,7 @@ const Axios = require('axios');
 const config = require('../config');
 
 const Account = require('../models/account').model;
-const Donation = require('../models/donation').model;
+const Txn = require('../models/txn').model;
 
 const data = require('./data');
 console.log(data);
@@ -21,19 +21,19 @@ async function getTxns(address, offset, limit) {
     const allPromises = data.map(async (dataPoint) => {
         console.log(dataPoint);
         if (dataPoint.tx.type === 'Transfer') {
-            const donationObject = {};
-            donationObject.raw_data = dataPoint;
-            donationObject.to = dataPoint.tx.to;
-            donationObject.from = dataPoint.tx.from;
-            donationObject.amount = dataPoint.tx.amount;
-            donationObject.token = dataPoint.tx.token;
-            donationObject.chain = 'ZKSYNC';
-            donationObject.txn_hash = dataPoint.hash;
-            donationObject.zksync_account_id = dataPoint.tx.accountId;
-            donationObject.commited_at = dataPoint.tx.validUntil;
-            donationObject.executed_at = dataPoint.created_at;
-            const donation = new Donation(donationObject);
-            await donation.save();
+            const txnObject = {};
+            txnObject.raw_data = dataPoint;
+            txnObject.to = dataPoint.tx.to;
+            txnObject.from = dataPoint.tx.from;
+            txnObject.amount = dataPoint.tx.amount;
+            txnObject.token = dataPoint.tx.token;
+            txnObject.chain = 'ZKSYNC';
+            txnObject.txn_hash = dataPoint.hash;
+            txnObject.zksync_account_id = dataPoint.tx.accountId;
+            txnObject.commited_at = dataPoint.tx.validUntil;
+            txnObject.executed_at = dataPoint.created_at;
+            const txn = new Txn(txnObject);
+            await txn.save();
         }
     });
     console.log(allPromises);

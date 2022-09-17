@@ -1,6 +1,6 @@
 /* eslint-disable no-process-exit */
 require('../utils/database');
-const { Donation, Account } = require('../models');
+const { Txn, Account } = require('../models');
 
 async function extractAccountsFromDonation(criteria, offset, limit) {
     const query = [
