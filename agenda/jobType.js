@@ -1,5 +1,6 @@
 const _jobs = {};
 
 _jobs.GET_ZKSYNC_TXNS = 'GET_ZKSYNC_TXNS';
+_jobs.EXTRACT_ACCOUNTS_FROM_DONATIONS = 'EXTRACT_ACCOUNTS_FROM_DONATIONS';
 
 module.exports = _jobs;

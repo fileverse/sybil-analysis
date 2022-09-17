@@ -3,14 +3,14 @@ const { Txn, Account } = require('../../models');
 const agenda = require('../index');
 const jobTypes = require('../jobType');
 
-agenda.define(jobTypes.EXTRACT_ACCOUNTS, async (job, done) => {
+agenda.define(jobTypes.EXTRACT_ACCOUNTS_FROM_DONATIONS, async (job, done) => {
   try {
     await run();
     done();
   } catch (err) {
     console.error(
       'Error removing job from collection',
-      jobTypes.EXTRACT_ACCOUNTS,
+      jobTypes.EXTRACT_ACCOUNTS_FROM_DONATIONS,
     );
     done(err);
   }
