@@ -54,6 +54,8 @@ async function run({ address, offset, limit }) {
             donationObject.zksync_account_id = dataPoint.tx.accountId;
             donationObject.commited_at = dataPoint.tx.validUntil;
             donationObject.executed_at = dataPoint.created_at;
+            const timestamp = (new Date(dataPoint.created_at)).getTime();
+            donationObject.executed_at_timestamp = timestamp;
             const donation = new Donation(donationObject);
             await donation.save();
         }

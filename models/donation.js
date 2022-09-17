@@ -14,6 +14,7 @@ _donation.schema = new Schema(
     zksync_account_id: { type: String },
     commited_at: { type: String },
     executed_at: { type: String },
+    executed_at_timestamp: { type: Number },
     raw_data: { type: Schema.Types.Mixed },
   },
   { usePushEach: true },
