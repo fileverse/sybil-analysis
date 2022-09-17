@@ -1,3 +1,4 @@
+const config = require('../../config');
 const { Donation, Account } = require('../../models');
 const agenda = require('../index');
 const jobTypes = require('../jobType');
@@ -93,7 +94,7 @@ async function processAccounts(accounts) {
 }
 
 async function run() {
-    const criteria = {};
+    const criteria = { to: config.GRANT_ADDRESS.toLowerCase() };
     const totalDonations = await Donation.find(criteria).count();
     const limit = 100;
     const batches = Math.ceil(totalDonations / limit);
