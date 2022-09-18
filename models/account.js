@@ -10,6 +10,11 @@ const Donation = new Schema({
   txn_hash: { type: String },
 });
 
+const Connection = new Schema({
+  txn_hash: { type: String },
+  to: { type: String, lowercase: true },
+});
+
 _account.schema = new Schema(
   {
     gitcoin_username: { type: String },
@@ -17,7 +22,7 @@ _account.schema = new Schema(
     in_gitcoin_list: { type: Boolean, default: false },
     main_address: { type: String, required: true, lowercase: true, index: true },
     donations: [Donation],
-    connected_addresses: [{ type: String, lowercase: true }],
+    connected_addresses: [Connection],
     active_chains: [{ type: String, enum: ["ZKSYNC", "POLYGON", "ETHEREUM"] }],
 
     // system generated
